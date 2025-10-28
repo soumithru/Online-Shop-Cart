@@ -1,0 +1,50 @@
+class ShoppingCart:
+    def __init__(self):
+        self.cart = {}
+
+    def add_item(self, item, price, quantity):
+        if item in self.cart:
+            self.cart[item]['quantity'] += quantity
+        else:
+            self.cart[item] = {'price': price, 'quantity': quantity}
+
+    def remove_item(self, item):
+        if item in self.cart:
+            del self.cart[item]
+
+    def view_cart(self):
+        if not self.cart:
+            print("Cart is empty.")
+            return
+        print("Your Cart:")
+        for item, details in self.cart.items():
+            print(f"{item}: ₹{details['price']} x {details['quantity']}")
+
+    def checkout(self):
+        total = sum(details['price'] * details['quantity'] for details in self.cart.values())
+        print(f"Total Amount: ₹{total}")
+        self.cart.clear()
+
+def menu():
+    cart = ShoppingCart()
+    while True:
+        print("\n1. Add Item\n2. Remove Item\n3. View Cart\n4. Checkout\n5. Exit")
+        choice = input("Enter choice: ")
+        if choice == '1':
+            item = input("Item name: ")
+            price = float(input("Price: "))
+            quantity = int(input("Quantity: "))
+            cart.add_item(item, price, quantity)
+        elif choice == '2':
+            item = input("Item name to remove: ")
+            cart.remove_item(item)
+        elif choice == '3':
+            cart.view_cart()
+        elif choice == '4':
+            cart.checkout()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid choice.")
+
+menu()
